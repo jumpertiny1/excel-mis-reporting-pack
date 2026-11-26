@@ -17,10 +17,14 @@ Data: Kaggle *US Regional Sales Data* (talhabu), synthetic, in USD. I split the 
 - **Summary:** one-page view of the report month: KPIs, teams meeting target, fulfilment rates, exception counts, check status, revenue trend.
 - **Sales_MIS:** team target vs actual (Met / Below) with pivot charts.
 - **Fulfilment_MIS:** per-warehouse days to ship and deliver, and SLA breach rates.
-- **Exceptions:** counts of loss-making, heavy-discount, slow-dispatch and slow-delivery orders.
+- **Exceptions:** counts of loss-making, heavy-discount, slow-dispatch and slow-delivery orders for all data and for the report month, plus the number of orders with at least one flag and with two or more.
 - **Control_Checks:** automatic PASS / FAIL tests against the key.
 - **Settings:** editable thresholds and targets, with data validation.
 - **Sales_Data / Pivots:** the cleaned combined table and the pivots behind the charts.
+
+![Fulfilment MIS](screenshots/04_fulfilment_mis.png)
+
+![Exceptions](screenshots/05_exceptions.png)
 
 ## How it works
 
