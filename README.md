@@ -26,9 +26,21 @@ Data: Kaggle *US Regional Sales Data* (talhabu), synthetic, in USD. I split the 
 
 - Power Query combines every CSV in a folder, cleans once on the combined table, and adds Revenue, Profit, margin and order-to-ship / ship-to-delivery days.
 - Thresholds are named cells on Settings (SLA_Dispatch, SLA_Delivery, Max_Discount, Loss_Limit, Target_Growth), so a limit is changed in one place and every report follows.
-- A Flags column tags each order with every rule it breaks. Targets are each team's average monthly revenue plus 5%, rounded to the nearest 1,000.
+- A Flags column tags each order with every rule it breaks, so one order can carry several flags.
 
-**Assumptions:** dispatch SLA 21 days, delivery SLA 7 days, heavy discount 30% or more, loss = profit below 0, target growth 5%. These are analyst assumptions, not facts from the data.
+## Assumptions
+
+These settings live on the Settings sheet. Every report reads from them, so changing a value updates the whole workbook.
+
+| Setting | Value | What it controls |
+|---|---|---|
+| Dispatch SLA | 21 days | Orders taking longer from order date to ship date are flagged `SlowDispatch` |
+| Delivery SLA | 7 days | Orders taking longer from ship date to delivery date are flagged `SlowDelivery` |
+| Heavy discount | 30% or more | Orders at or above this discount are flagged `HeavyDiscount` |
+| Loss limit | profit below 0 | Orders below this profit are flagged `Loss` |
+| Target growth | 5% | Team monthly target = average monthly revenue x 1.05, rounded to the nearest 1,000 |
+
+Targets are stored as fixed values.
 
 ## Control checks
 
@@ -40,17 +52,17 @@ Six tests, all passing against the key: 7,748 rows, revenue 70,832,295.81, profi
 
 - 262 orders, about $2.30M revenue, about $0.65M profit (28.1% margin).
 - 11 of 28 teams (39%) met target.
-- 26.3% of orders were dispatched late and 33.2% delivered late. Across all data, 53% of orders carry at least one flag, which suggests the SLAs may be tighter than real service levels.
+- 26.3% of orders were dispatched late and 33.2% delivered late. Across all data, 53% of orders breach at least one rule, so the 21-day and 7-day limits are worth reviewing with the business.
 
 ![Sales MIS](screenshots/02_sales_mis.png)
 
-## Refresh and limitations
+## Refresh and next steps
 
-New monthly files placed in the data folder are meant to be picked up with **Data > Refresh All**; then check Control_Checks and read the Summary.
+The query reads every CSV in the data folder. To refresh, press **Data > Refresh All**, check that Control_Checks shows no FAIL, then read the Summary.
 
-- **A refresh with the held-back December 2020 files was not completed**, so I do not claim that refresh as tested.
-- The query's folder path is absolute. After downloading, repoint it via **Data > Get Data > Data Source Settings > Change Source**.
-- The data is synthetic, so findings illustrate the method, not real results.
+- **Tested:** refresh on the six main files, reconciled to the key (all six checks pass).
+- **Not yet tested:** adding the held-back December 2020 files to the folder.
+- **Setup:** the query's folder path is absolute. After downloading, repoint it via **Data > Get Data > Data Source Settings > Change Source**.
 
 ## Skills demonstrated
 
